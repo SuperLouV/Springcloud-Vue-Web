@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 7/6/20 9:14 下午
  * @Email:ylou7@stevens.edu
  */
-
+//@RequestMapping("/system")
 @RestController
 public class TestController {
 
