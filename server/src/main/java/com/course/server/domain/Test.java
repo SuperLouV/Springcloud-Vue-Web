@@ -1,13 +1,6 @@
 package com.course.server.domain;
 
-/**
- * @author Yilinlou
- * @date 7/17/20 6:27 下午
- * @Email:ylou7@stevens.edu
- */
-
 public class Test {
-
     private String id;
 
     private String name;
@@ -26,5 +19,17 @@ public class Test {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append("]");
+        return sb.toString();
     }
 }
