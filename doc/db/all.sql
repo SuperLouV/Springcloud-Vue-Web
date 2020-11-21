@@ -5,6 +5,9 @@ create table `chapter` (
                            `name` varchar(50) comment '名称',
                            primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment='大章';
+insert into `chapter` (id, course_id,name) values (1, 'cs550', 'Data Structure');
+insert into `chapter` (id, course_id,name) values (2, 'cs559', 'Machine Learning');
+
 
 
 
