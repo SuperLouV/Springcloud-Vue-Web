@@ -19,7 +19,7 @@ export default new Router({
         path: '/admin',
         component: Admin,
         children: [{
-            path: 'welcome',
+            path: 'welcome',        //子路径中不包含"/"
             component: Welcome,
         }]
     }]
