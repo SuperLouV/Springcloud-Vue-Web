@@ -16,13 +16,13 @@ import java.util.List;
  */
 //@RequestMapping("/system")
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/chapter")
 public class ChapterController {
 
     @Resource
     private ChapterService chapterServicel;
 
-    @RequestMapping("/chapter")
+    @RequestMapping("/list")
     public List<ChapterDto> chapter(){
         return chapterServicel.list();
     }
