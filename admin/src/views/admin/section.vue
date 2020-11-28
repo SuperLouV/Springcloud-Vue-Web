@@ -61,7 +61,8 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">表单</h4>
                     </div>
                     <div class="modal-body">
@@ -140,16 +141,20 @@
 
 <script>
     import Pagination from "../../components/pagination";
+
     export default {
         components: {Pagination},
         name: "section",
-        data: function() {
+        data: function () {
             return {
-            section: {},
+            section:
+            {
+            }
+        ,
             sections: []
         }
         },
-        mounted: function() {
+        mounted: function () {
             let _this = this;
             _this.$refs.pagination.size = 5;
             _this.list(1);
@@ -185,7 +190,7 @@
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/section/list', {
                     page: page,
                     size: _this.$refs.pagination.size,
-                }).then((response)=>{
+                }).then((response) => {
                     Loading.hide();
                     let resp = response.data;
                     _this.sections = resp.content.list;
@@ -201,9 +206,15 @@
                 let _this = this;
 
                 // 保存校验
-
+                if (1 != 1
+                    || !Validator.require(_this.section.title, "标题")
+                    || !Validator.length(_this.section.title, "标题", 1, 50)
+                    || !Validator.length(_this.section.video, "视频", 1, 200)
+                ) {
+                    return;
+                }
                 Loading.show();
-                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/section/save', _this.section).then((response)=>{
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/business/admin/section/save', _this.section).then((response) => {
                     Loading.hide();
                     let resp = response.data;
                     if (resp.success) {
@@ -223,7 +234,7 @@
                 let _this = this;
                 Confirm.show("删除小节后不可恢复，确认删除？", function () {
                     Loading.show();
-                    _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/section/delete/' + id).then((response)=>{
+                    _this.$ajax.delete(process.env.VUE_APP_SERVER + '/business/admin/section/delete/' + id).then((response) => {
                         Loading.hide();
                         let resp = response.data;
                         if (resp.success) {

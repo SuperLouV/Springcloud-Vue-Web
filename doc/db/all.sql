@@ -28,7 +28,7 @@ CREATE TABLE `section` (
                            `chapter_id` CHAR(8) COMMENT '大章|chapter.id',
                            `video` VARCHAR(200) COMMENT '视频',
                            `time` INT COMMENT '时长|单位秒',
-                           `charge` CHAR(8) COMMENT '收费|C 收费；F 免费',
+                           `charge` CHAR(1) COMMENT '收费|C 收费；F 免费',
                            `sort` INT COMMENT '顺序',
                            `created_at` DATETIME(3) COMMENT '创建时间',
                            `updated_at` DATETIME(3) COMMENT '修改时间',

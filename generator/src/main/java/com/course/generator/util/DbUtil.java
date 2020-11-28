@@ -11,13 +11,14 @@ import java.util.regex.Pattern;
  */
 
 public class DbUtil {
+
     public static Connection getConnection() {
         Connection conn = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/courseimooc?serverTimezone=UTC";
-            String user = "root";   //username
-            String pass = "";       //psw is null
+            String user = "root";
+            String pass = "";
             conn = DriverManager.getConnection(url, user, pass);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -67,6 +68,7 @@ public class DbUtil {
                 String columnName = rs.getString("Field");
                 String type = rs.getString("Type");
                 String comment = rs.getString("Comment");
+                String nullAble = rs.getString("Null"); //YES NO
                 Field field = new Field();
                 field.setName(columnName);
                 field.setNameHump(lineToHump(columnName));
@@ -78,6 +80,13 @@ public class DbUtil {
                     field.setNameCn(comment.substring(0, comment.indexOf("|")));
                 } else {
                     field.setNameCn(comment);
+                }
+                field.setNullAble("YES".equals(nullAble));
+                if (type.toUpperCase().contains("varchar".toUpperCase())) {
+                    String lengthStr = type.substring(type.indexOf("(") + 1, type.length() - 1);
+                    field.setLength(Integer.valueOf(lengthStr));
+                } else {
+                    field.setLength(0);
                 }
                 fieldList.add(field);
             }

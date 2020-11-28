@@ -45,7 +45,8 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">表单</h4>
                     </div>
                     <div class="modal-body">
@@ -72,16 +73,20 @@
 
 <script>
     import Pagination from "../../components/pagination";
+
     export default {
         components: {Pagination},
         name: "${domain}",
-        data: function() {
+        data: function () {
             return {
-            ${domain}: {},
+            ${domain}:
+            {
+            }
+        ,
             ${domain}s: []
         }
         },
-        mounted: function() {
+        mounted: function () {
             let _this = this;
             _this.$refs.pagination.size = 5;
             _this.list(1);
@@ -117,7 +122,7 @@
                 _this.$ajax.post(process.env.VUE_APP_SERVER + '/${module}/admin/${domain}/list', {
                     page: page,
                     size: _this.$refs.pagination.size,
-                }).then((response)=>{
+                }).then((response) => {
                     Loading.hide();
                     let resp = response.data;
                     _this.${domain}s = resp.content.list;
@@ -133,9 +138,20 @@
                 let _this = this;
 
                 // 保存校验
-
+                if (1 != 1
+                    <#list fieldList as field>
+                    <#if !field.nullAble>
+                    || !Validator.require(_this.${domain}.${field.nameHump}, "${field.nameCn}")
+                    </#if>
+                    <#if (field.length > 0)>
+                    || !Validator.length(_this.${domain}.${field.nameHump}, "${field.nameCn}", 1, ${field.length})
+                    </#if>
+                    </#list>
+                ) {
+                    return;
+                }
                 Loading.show();
-                _this.$ajax.post(process.env.VUE_APP_SERVER + '/${module}/admin/${domain}/save', _this.${domain}).then((response)=>{
+                _this.$ajax.post(process.env.VUE_APP_SERVER + '/${module}/admin/${domain}/save', _this.${domain}).then((response) => {
                     Loading.hide();
                     let resp = response.data;
                     if (resp.success) {
@@ -155,7 +171,7 @@
                 let _this = this;
                 Confirm.show("删除${tableNameCn}后不可恢复，确认删除？", function () {
                     Loading.show();
-                    _this.$ajax.delete(process.env.VUE_APP_SERVER + '/${module}/admin/${domain}/delete/' + id).then((response)=>{
+                    _this.$ajax.delete(process.env.VUE_APP_SERVER + '/${module}/admin/${domain}/delete/' + id).then((response) => {
                         Loading.hide();
                         let resp = response.data;
                         if (resp.success) {
