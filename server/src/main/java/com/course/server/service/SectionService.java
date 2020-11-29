@@ -3,7 +3,6 @@ package com.course.server.service;
 import com.course.server.domain.Section;
 import com.course.server.domain.SectionExample;
 import com.course.server.dto.SectionDto;
-import com.course.server.dto.PageDto;
 import com.course.server.dto.SectionPageDto;
 import com.course.server.mapper.SectionMapper;
 import com.course.server.util.CopyUtil;
@@ -11,6 +10,7 @@ import com.course.server.util.UuidUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -49,6 +49,7 @@ public class SectionService {
     /**
      * 保存，id有值时更新，无值时新增
      */
+    @Transactional
     public void save(SectionDto sectionDto) {
         Section section = CopyUtil.copy(sectionDto, Section.class);
         if (StringUtils.isEmpty(sectionDto.getId())) {
