@@ -61,7 +61,11 @@ List
     * 新增
     */
     private void insert(${Domain} ${domain}) {
-    Date now = new Date();
+    <#list typeSet as type>
+        <#if type=='Date'>
+            import java.util.Date;
+        </#if>
+    </#list>
     <#list fieldList as field>
         <#if field.nameHump=='createdAt'>
             ${domain}.setCreatedAt(now);
