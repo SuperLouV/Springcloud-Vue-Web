@@ -1,9 +1,13 @@
 package com.course.generator.util;
+
+import com.course.generator.enums.EnumGenerator;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 /**
  * @author Yilinlou
  * @date 11/28/20 3:54 下午
@@ -30,6 +34,7 @@ public class DbUtil {
 
     /**
      * 获得表注释
+     *
      * @param tableName
      * @return
      * @throws Exception
@@ -40,7 +45,7 @@ public class DbUtil {
         ResultSet rs = stmt.executeQuery("select table_comment from information_schema.tables Where table_name = '" + tableName + "'");
         String tableNameCH = "";
         if (rs != null) {
-            while(rs.next()) {
+            while (rs.next()) {
                 tableNameCH = rs.getString("table_comment");
                 break;
             }
@@ -54,6 +59,7 @@ public class DbUtil {
 
     /**
      * 获得所有列信息
+     *
      * @param tableName
      * @return
      * @throws Exception
@@ -64,7 +70,7 @@ public class DbUtil {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery("show full columns from `" + tableName + "`");
         if (rs != null) {
-            while(rs.next()) {
+            while (rs.next()) {
                 String columnName = rs.getString("Field");
                 String type = rs.getString("Type");
                 String comment = rs.getString("Comment");
@@ -88,6 +94,18 @@ public class DbUtil {
                 } else {
                     field.setLength(0);
                 }
+                if (comment.contains("枚举")) {
+                    field.setEnums(true);
+
+                    // 以课程等级为例：从注释中的“枚举[CourseLevelEnum]”，得到COURSE_LEVEL
+                    int start = comment.indexOf("[");
+                    int end = comment.indexOf("]");
+                    String enumsName = comment.substring(start + 1, end);
+                    String enumsConst = EnumGenerator.toUnderline(enumsName);
+                    field.setEnumsConst(enumsConst);
+                } else {
+                    field.setEnums(false);
+                }
                 fieldList.add(field);
             }
         }
@@ -101,12 +119,12 @@ public class DbUtil {
     /**
      * 下划线转小驼峰
      */
-    public static String lineToHump(String str){
+    public static String lineToHump(String str) {
         Pattern linePattern = Pattern.compile("_(\\w)");
         str = str.toLowerCase();
         Matcher matcher = linePattern.matcher(str);
         StringBuffer sb = new StringBuffer();
-        while(matcher.find()){
+        while (matcher.find()) {
             matcher.appendReplacement(sb, matcher.group(1).toUpperCase());
         }
         matcher.appendTail(sb);
@@ -116,7 +134,7 @@ public class DbUtil {
     /**
      * 下划线转大驼峰
      */
-    public static String lineToBigHump(String str){
+    public static String lineToBigHump(String str) {
         String s = lineToHump(str);
         return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
